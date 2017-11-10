@@ -2,7 +2,13 @@ package com.test.security;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix="securityconfig")
+/**
+ * 
+ * 具体的配置在web1、web2模块（引用了security模块）的application.yml的 securityconfig 中配置。
+ * @author tangyz
+ *
+ */
+@ConfigurationProperties(prefix="securityconfig") // 设置配置参数的前缀为securityconfig
 public class SecuritySettings {
     private String logoutsuccssurl = "/logout";
     private String permitall = "/api";

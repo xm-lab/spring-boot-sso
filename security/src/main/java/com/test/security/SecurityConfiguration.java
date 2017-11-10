@@ -31,9 +31,24 @@ import java.util.List;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
+    
+    /**
+     * 具体的配置在web1、web2模块（引用了security模块）的application.yml的 securityconfig 中配置。
+     */
     @Autowired
     private SecuritySettings settings;
 
+    /**
+     * 
+     * antMatchers()方法所设定的路径支持Ant风格的通配符
+     * anyRequest：指任意请求
+     * 
+     * permitAll：完全允许访问的一些URL的配置，可以通过通配符设置，这里将一些资源目录赋予了可以完全访问的权限，由settings指定的权限列表也赋予了完全访问的权限。
+     * csrf：即跨站请求伪造（cross-site request forgery），这是一个防止跨站请求伪造攻击的策略配置。
+     * logout：设置使用默认的登出
+     * logoutSuccessUrl：登出成功后要跳转的链接
+     * accessDeniedPage：拒绝访问的提示链接
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
@@ -44,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
                 .logout().logoutUrl("/logout").permitAll()
-                .logoutSuccessUrl(settings.getLogoutsuccssurl())
+                .logoutSuccessUrl(settings.getLogoutsuccssurl()) // 在当前客户端退出登录后，通过tosignout.html跳转到OAuth服务器（即login模块）中执行SSO的退出登录
                 .and()
                 .exceptionHandling().accessDeniedPage(settings.getDeniedpage());
     }

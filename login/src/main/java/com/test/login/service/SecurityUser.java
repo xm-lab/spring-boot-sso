@@ -27,6 +27,9 @@ public class SecurityUser extends User implements UserDetails
         }
     }
 
+    /**
+     * 授予client的权限
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
